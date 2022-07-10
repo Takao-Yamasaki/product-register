@@ -1,0 +1,37 @@
+# dockeer composeのバージョンで、ほとんど3でOK
+version: '3'
+
+volumes:
+  db-data:
+
+services:
+  web:
+    # Dockerfileを元にイメージを作成するので、カレントディレクトリを指定
+    build: .
+    # <host_port>:<container_port>
+    ports:
+      - '3000:3000'
+    # ホストとコンテナをマウントする
+    # ホスト側は相対パスを指定
+    volumes:
+      - '.:/product-register'
+    environment:
+      - 'DATABASE_PASSWORD=postgres'
+    # コマンドだと、'-it'で指定する箇所
+    # 出力結果を綺麗にする
+    tty: true
+    # 入力チャネルを開く
+    stdin_open: true
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+  # イメージを取得する
+    image: postgres
+    volumes:
+      - 'db-data:/var/lib/postgresql/data'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=postgres'    
