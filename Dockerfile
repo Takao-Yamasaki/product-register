@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /product-register
 
 # コンテナ側にGemfileとGemfile.lockをコピー
-COPY Gemfile Gemfile.lock /product-register
+COPY Gemfile Gemfile.lock /product-register/
 
 # bundle installを実行する
 RUN bundle install
